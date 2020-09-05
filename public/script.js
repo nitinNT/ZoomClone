@@ -5,10 +5,12 @@ const myVideo= document.createElement('video');
 myVideo.muted=true;
 let myVideoStream 
 
+const peers={}
+
 var peer = new Peer(undefined, {
     path:'/peerjs',
     host : '/',
-    port:'443'
+    port: '4030'
 });
 
 if (ROOM_ID)
@@ -78,6 +80,9 @@ peer.on('open',id=>{
     socket.emit('join-room',ROOM_ID,id);    
 })
 
+socket.on('user-disconnected', userId => {
+    if (peers[userId]) peers[userId].close()
+})
 
 
 const conneToNewUser=(userId,stream)=>{
@@ -86,6 +91,12 @@ const conneToNewUser=(userId,stream)=>{
     call.on('stream', function(userRemoteStream) {
         addvideoStream(video,userRemoteStream)
     });
+
+    call.on('close', () => {
+        video.remove()
+      })
+    
+    peers[userId] = call
 }
 
 const addvideoStream= (video,stream)=>{
