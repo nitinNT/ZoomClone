@@ -11,6 +11,15 @@ var peer = new Peer(undefined, {
     port:'443'
 });
 
+if (ROOM_ID)
+{
+    var person = prompt("Please Enter Your Name");
+    var x = document.getElementById("snackbar");
+    x.className = "show";
+    x.textContent=person+" Joined the meeting";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+
 const muteUnmute= ()=>{
     const enabled = myVideoStream.getAudioTracks()[0].enabled;
     if (enabled){
