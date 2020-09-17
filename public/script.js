@@ -94,7 +94,7 @@ const conneToNewUser=(userId,stream)=>{
 
     call.on('close', () => {
         video.remove()
-      })
+    })
     
     peers[userId] = call
 }
